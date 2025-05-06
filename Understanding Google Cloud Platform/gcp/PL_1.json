@@ -1,0 +1,55 @@
+[
+
+    {
+        "task": "Create a storage bucket in the asia region",
+        "command": "gcloud storage buckets create gs://bucket_ayushman --location=asia",
+        "terminal_output": "Creating gs://bucket_ayushman/..."
+    },
+    {
+        "task": "List all storage buckets",
+        "command": "gcloud storage ls",
+        "terminal_output": "gs://bucket_ayushman/"
+    },
+    {
+        "task": "Upload a file to a bucket",
+        "command": "gcloud storage cp ./xyz.json gs://bucket_ayushman/",
+        "terminal_output": "Copying file://.\xyz.json to gs://bucket_ayushman/xyz.json
+                            Completed files 1/1 | 1.0kiB/1.0kiB"
+    },
+    {
+        "task": "Download a file from a bucket",
+        "command": "gcloud storage cp gs://bucket_ayushman/xyz.json C:\Users\ASUS\gcp",
+        "terminal_output": "Copying gs://bucket_ayushman/xyz.json to file://C:\Users\ASUS\gcp\xyz.json
+                            Completed files 1/1 | 1.0kiB/1.0kiB"
+    },
+    {
+        "task": "Move a file from one bucket to anothern",
+        "command": "gcloud storage mv gs://bucket_ayushman/xyz.json gs://happy_all",
+        "terminal_output": "Copying gs://bucket_ayushman/xyz.json to gs://happy_all/xyz.json
+                            working..Removing gs://bucket_ayushman/xyz.json...
+                            Completed files 2/1 | 1.0kiB/1.0kiB"
+    },
+    {
+        "task": "Delete a file from a bucket",
+        "command": "gcloud storage rm gs://happy_all/xyz.json",
+        "terminal_output": "Removing objects:
+                            working..Removing gs://happy_all/xyz.json...
+                            Completed 1/1"
+    },
+    {
+        "task": "Delete an empty bucket",
+        "command": "gcloud storage buckets delete gs://bucket_ayushman",
+        "terminal_output": "working..Removing gs://bucket_ayushman/...
+                        Completed 1/1"
+    },
+    {
+        "task": "Delete a non-empty bucket",
+        "command": "gcloud storage rm --recursive gs://happy_all",
+        "terminal_output": "Removing objects:
+                            working..Removing gs://happy_all/xyz.json#1746384463515424...
+                              Completed 1/1
+                            Removing buckets:
+                            working..Removing gs://happy_all/...
+                              Completed 1/1"
+    },
+]

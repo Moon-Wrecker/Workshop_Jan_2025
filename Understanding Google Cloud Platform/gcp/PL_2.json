@@ -1,0 +1,83 @@
+[
+
+    {
+        "task": "Enable gcloud admin API",
+        "command": "gcloud services enable sqladmin.googleapis.com",
+        "terminal_output": "Operation "operations/acat.p2-312970045040-39e147ed-85fd-43cc-8098-4f74f68ae267" finished successfully."
+    },
+    {
+        "task": "Create a new instance for cloud SQL for database engine [Engine] with db-f1-micro tier in the asia-southeast1 region.",
+        "command": "gcloud sql instances create mysqlinstanceam6 --database-version=MYSQL_8_0 --tier=db-f1-micro --region=asia-southeast1",
+        "terminal_output": "Creating Cloud SQL instance for MYSQL_8_0...done.
+                            Created [https://sqladmin.googleapis.com/sql/v1beta4/projects/rugged-layout-458711-q4/instances/mysqlinstanceam6].
+                            NAME: mysqlinstanceam6
+                            DATABASE_VERSION: MYSQL_8_0
+                            LOCATION: asia-southeast1-c
+                            TIER: db-f1-micro
+                            PRIMARY_ADDRESS: 34.142.242.59
+                            PRIVATE_ADDRESS: -
+                            STATUS: RUNNABLE"
+    },
+    {
+        "task": "List all the available instances",
+        "command": "gcloud sql instances list",
+        "terminal_output": "NAME: am-id-01
+                            DATABASE_VERSION: MYSQL_8_0_40
+                            LOCATION: asia-south2-c
+                            TIER: db-custom-8-32768
+                            PRIMARY_ADDRESS: 34.131.252.188
+                            PRIVATE_ADDRESS: -
+                            STATUS: STOPPED
+
+                            NAME: mysqlinstanceam6
+                            DATABASE_VERSION: MYSQL_8_0
+                            LOCATION: asia-southeast1-c
+                            TIER: db-f1-micro
+                            PRIMARY_ADDRESS: 34.142.242.59
+                            PRIVATE_ADDRESS: -
+                            STATUS: RUNNABLE"
+    },
+    {
+        "task": "Create a database in the same instance",
+        "command": "gcloud sql databases create am_database  --instance=mysqlinstanceam6 ",
+        "terminal_output": "Creating Cloud SQL database...done.
+                            Created database [am_database].
+                            instance: mysqlinstanceam6
+                            name: am_database
+                            project: rugged-layout-458711-q4"
+    },
+    {
+        "task": "Create a user with password in the same instance",
+        "command": "gcloud sql users set-password SuperMan --host=% --instance=mysqlinstanceam6 --password=ayu_wayu_123",
+        "terminal_output": "Updating Cloud SQL user...done."
+    },
+    {
+        "task": "Get public IP of the instance",
+        "command": "gcloud sql instances describe mysqlinstanceam6 --format="value(ipAddresses[0].ipAddress)"",
+        "terminal_output": "34.142.242.59"
+    },
+    {
+        "task": "Run Cloud SQL Auth Proxy",
+        "command": ".\cloud-sql-proxy.x64.exe rugged-layout-458711-q4:asia-southeast1:mysqlinstanceam6",
+        "terminal_output": "PS C:\Users\ASUS\gcp> .\cloud-sql-proxy.x64.exe rugged-layout-458711-q4:asia-southeast1:mysqlinstanceam6
+                            2025/05/05 17:21:21 Authorizing with Application Default Credentials
+                            2025/05/05 17:21:22 [rugged-layout-458711-q4:asia-southeast1:mysqlinstanceam6] Listening on 127.0.0.1:3306
+                            2025/05/05 17:21:22 The proxy has started successfully and is ready for new connections!"
+    },
+    {
+        "task": "Command to login using mysql/psql shell",
+        "command": "mysql -u root -p -h 127.0.0.1",
+        "terminal_output": "Enter password:
+                            Welcome to the MySQL monitor.  Commands end with ; or \g.
+                            Your MySQL connection id is 978
+                            Server version: 8.0.40-google (Google)
+                                
+                            Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+                                
+                            Oracle is a registered trademark of Oracle Corporation and/or its
+                            affiliates. Other names may be trademarks of their respective
+                            owners.
+                                
+                            Type 'help;' or '\h' for help. Type '\c' to clear the current input statement."
+    },   
+]
